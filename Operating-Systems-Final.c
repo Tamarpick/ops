@@ -324,3 +324,38 @@ void echoppend(char **args) {
 
     printf("המחרוזת '%s' נוספה בהצלחה לקובץ '%s'\n", args[1], filePath);
 }
+
+
+//חלק ד' סעיף ג'
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// פונקציה לכתיבת מחרוזת לקובץ, מחליפה את תוכן הקובץ במחרוזת החדשה
+void echowrite(char **args) {
+    // בדיקה שיש לפחות שני ארגומנטים במערך (הפקודה והנתיב)
+    if (args[1] == NULL || args[2] == NULL) {
+        fprintf(stderr, "שגיאה: חסרים ארגומנטים\n");
+        return;
+    }
+
+    // הנחה שהארגומנט האחרון הוא הנתיב לקובץ
+    char *filePath = args[2];
+    // פתיחת הקובץ לכתיבה (מחיקת תוכן קיים)
+    FILE *file = fopen(filePath, "w");
+    if (file == NULL) {
+        perror("שגיאה בפתיחת הקובץ");
+        return;
+    }
+
+    // כתיבת המחרוזת לקובץ
+    fprintf(file, "%s\n", args[1]);
+
+    // סגירת הקובץ
+    fclose(file);
+
+    printf("המחרוזת '%s' נכתבה בהצלחה לקובץ '%s'\n", args[1], filePath);
+}
