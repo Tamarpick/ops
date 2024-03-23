@@ -94,3 +94,44 @@ void logout(char* commandStr) {
     // אם הפקודה לא הייתה "exit" תקנית, הדפסת הודעת שגיאה
     printf("Command not recognized. Please use 'exit' to close the terminal.\n");
 }
+
+
+//חלק ב' סעיף ב'
+
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+// פונקציה לשינוי התיקייה הנוכחית בהתאם לפרמטרים שהתקבלו
+void cd(char **params) {
+    char pathBuffer[1024] = {0}; // מערך לשמירת הנתיב המלא
+    int index = 1; // אינדקס לעיבוד ארגומנטים
+
+    // בדיקה אם הארגומנט הראשון לא ריק ואם אין ארגומנט נוסף או שהנתיב מכיל מרכאות
+    if (params[index] != NULL && (params[index+1] == NULL || strchr(params[index], '"') != NULL)) {
+        strcpy(pathBuffer, params[index]); // העתקת הנתיב למערך
+        
+        char *charPtr = pathBuffer; // מצביע לתו הראשון במערך
+        while (*charPtr) { // הסרת כל המרכאות מהנתיב
+            if (*charPtr == '"') {
+                memmove(charPtr, charPtr+1, strlen(charPtr));
+            } else {
+                ++charPtr;
+            }
+        }
+    } else {
+        // עיבוד ארגומנטים נוספים ובניית הנתיב מחדש עם רווחים ביניהם
+        while (params[index] != NULL) {
+            strcat(pathBuffer, params[index]);
+            if (params[index+1] != NULL) strcat(pathBuffer, " ");
+            index++;
+        }
+    }
+
+    // ביצוע פקודת שינוי התיקייה, אם נכשל מדפיס שגיאה
+    if (chdir(pathBuffer) == -1) {
+        perror("cd failed");
+    }
+}
