@@ -290,3 +290,37 @@ void move(char **args) {
 
     printf("הקובץ הועבר בהצלחה מ- '%s' אל- '%s'\n", sourcePath, destPath);
 }
+
+
+
+//חלק ד' סעיף ב'
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// פונקציה להוספת טקסט לקובץ. הפונקציה מקבלת מערך של ארגומנטים
+void echoppend(char **args) {
+    // בדיקה שיש לפחות שני ארגומנטים במערך (הפקודה והנתיב)
+    if (args[1] == NULL || args[2] == NULL) {
+        fprintf(stderr, "שגיאה: חסרים ארגומנטים\n");
+        return;
+    }
+
+    // הנחה שהארגומנט האחרון הוא הנתיב לקובץ
+    char *filePath = args[2];
+    // פתיחת הקובץ לכתיבה בסוף הקובץ. יצירת הקובץ אם לא קיים
+    FILE *file = fopen(filePath, "a");
+    if (file == NULL) {
+        perror("שגיאה בפתיחת הקובץ");
+        return;
+    }
+
+    // הוספת המחרוזת לקובץ
+    fprintf(file, "%s\n", args[1]);
+
+    // סגירת הקובץ
+    fclose(file);
+
+    printf("המחרוזת '%s' נוספה בהצלחה לקובץ '%s'\n", args[1], filePath);
+}
