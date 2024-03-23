@@ -433,10 +433,3 @@ void wordCount(char **args) {
     fclose(file);
 }
 
-int main() {
-    // דוגמא לשימוש בפונקציה עם אופציית ספירת מילים
-    char *args[] = {"wordCount", "-w", "example.txt", NULL};
-    wordCount(args);
-
-    return 0;
-}
