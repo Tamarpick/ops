@@ -179,3 +179,24 @@ void cp(char **inputs) {
     fclose(dstFile);
 }
 
+
+//חלק ג' סעיף א'
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+// פונקציה למחיקת קובץ עם טיפול בנתיבים המכילים רווחים
+void delete(char *path) {
+    // הסרת מרכאות מהנתיב אם קיימות
+    if (path[0] == '"' && path[strlen(path) - 1] == '"') {
+        path[strlen(path) - 1] = '\0'; // הסרת המרכאות מסוף המחרוזת
+        path++; // התעלמות מהמרכאות בתחילת המחרוזת
+    }
+
+    // ביצוע מחיקת הקובץ
+    if (remove(path) == 0) {
+        printf("הקובץ '%s' נמחק בהצלחה.\n", path);
+    } else {
+        perror("שגיאה במחיקת הקובץ");
+    }
+}
