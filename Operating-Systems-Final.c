@@ -58,3 +58,39 @@ return arguments; // החזרת המערך עם האסימונים
 }
 
 
+
+//חלק ב' סעיף א'
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// פונקציה לטיפול בפקודת יציאה מהממשק
+void logout(char* commandStr) {
+    // כתובת התחלת המחרוזת לאחר הסרת רווחים מהתחלה
+    char* cleanedCmd = commandStr + strspn(commandStr, " \t\n");
+    // מצביע לתו האחרון במחרוזת לפני רווחים סופיים
+    char* endCmd = cleanedCmd + strlen(cleanedCmd) - 1;
+    // הסרת רווחים, טאבים ושורות חדשות מסוף המחרוזת
+    while (endCmd > cleanedCmd && (*endCmd == ' ' || *endCmd == '\t' || *endCmd == '\n')) {
+        *endCmd = '\0'; // החלפת תווים אלו בסיום מחרוזת
+        endCmd--; // הזזה לתו הקודם
+    }
+
+    // פיצול המחרוזת למילה הראשונה
+    char* firstCmd = strtok(cleanedCmd, " \t");
+    // בדיקה אם המילה הראשונה היא "exit"
+    if (firstCmd != NULL && strcmp(firstCmd, "exit") == 0) {
+        // ניסיון לקבלת המילה השנייה - אם לא קיימת, הפקודה תקפה
+        char* nextCmd = strtok(NULL, " \t");
+        if (nextCmd == NULL) { // אין פרמטרים נוספים
+            printf("Exiting the terminal...\n");
+            free(commandStr); // שחרור הזיכרון שהוקצה למחרוזת
+            exit(0); // יציאה מהתוכנית
+        }
+    }
+
+    // אם הפקודה לא הייתה "exit" תקנית, הדפסת הודעת שגיאה
+    printf("Command not recognized. Please use 'exit' to close the terminal.\n");
+}
