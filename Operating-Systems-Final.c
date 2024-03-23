@@ -135,3 +135,47 @@ void cd(char **params) {
         perror("cd failed");
     }
 }
+
+
+//חלק ב' סעיף ג'
+
+void cp(char **inputs) {
+    char srcPath[1024]; // מערך לשמירת הנתיב המקורי
+    char dstPath[1024]; // מערך לשמירת הנתיב היעד
+
+    // העתקת הנתיב המקורי מהקלט, והסרת מרכאות אם קיימות
+    strcpy(srcPath, inputs[1]);
+    removeQuotes(srcPath);
+
+    // העתקת הנתיב היעד מהקלט, והסרת מרכאות אם קיימות
+    strcpy(dstPath, inputs[2]);
+    removeQuotes(dstPath);
+
+    // ניסיון לפתוח את הקובץ המקורי לקריאה
+    FILE* srcFile = fopen(srcPath, "rb");
+    if (srcFile == NULL) { // אם הפתיחה נכשלת, הדפסת שגיאה ויציאה
+        perror("Error opening source file");
+        return;
+    }
+
+    // ניסיון לפתוח את הקובץ היעד לכתיבה
+    FILE* dstFile = fopen(dstPath, "wb");
+    if (dstFile == NULL) { // אם הפתיחה נכשלת, סגירת הקובץ המקורי, הדפסת שגיאה ויציאה
+        fclose(srcFile);
+        perror("Error opening destination file");
+        return;
+    }
+
+    // הגדרת באפר לקריאת הנתונים מהקובץ המקורי וכתיבתם ליעד
+    char dataBuffer[4096];
+    size_t bytesRead;
+    // קריאת נתונים מהקובץ המקורי וכתיבתם לקובץ היעד עד לסיום הקובץ
+    while ((bytesRead = fread(dataBuffer, 1, sizeof(dataBuffer), srcFile)) > 0) {
+        fwrite(dataBuffer, 1, bytesRead, dstFile);
+    }
+
+    // סגירת הקבצים
+    fclose(srcFile);
+    fclose(dstFile);
+}
+
