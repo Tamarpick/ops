@@ -200,3 +200,46 @@ void delete(char *path) {
         perror("שגיאה במחיקת הקובץ");
     }
 }
+
+
+//חלק ג' ססעיף ב'
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+// פונקציה לפיצול מחרוזת למערכים של ארגומנטים לפני ואחרי התו '|'
+void splitAndExecute(char* input) {
+    char* args[256]; // מערך זמני לאחסון ארגומנטים
+    char* command1[128]; // מערך לארגומנטים של הפקודה הראשונה
+    char* command2[128]; // מערך לארגומנטים של הפקודה השנייה
+    char* token;
+    int i = 0, j = 0;
+
+    // פיצול הקלט לארגומנטים באמצעות strtok
+    token = strtok(input, " ");
+    while(token != NULL) {
+        args[i++] = token;
+        token = strtok(NULL, " ");
+    }
+    args[i] = NULL; // סימון סוף המערך
+
+    // חלוקת הארגומנטים לשני מערכים לפני ואחרי התו '|'
+    for (i = 0; args[i] != NULL; i++) {
+        if (strcmp(args[i], "|") == 0) {
+            command1[i] = NULL; // סיום מערך הארגומנטים הראשון
+            i++;
+            break;
+        }
+        command1[i] = args[i];
+    }
+
+    // מילוי מערך הארגומנטים השני
+    for (j = 0; args[i] != NULL; i++, j++) {
+        command2[j] = args[i];
+    }
+    command2[j] = NULL; // סימון סוף המערך
+
+    // כעת, ניתן לקרוא לפונקציה mypipe עם command1 ו-command2
+    // mypipe(command1, command2); // הנחה שהפונקציה mypipe מוגדרת במקום אחר
+}
