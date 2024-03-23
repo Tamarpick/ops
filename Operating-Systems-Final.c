@@ -33,3 +33,28 @@ void getLocation() {
 
     printf("\033[1;34mUser:\033[0m \033[1;32m%s\033[0m \033[1;34mHost:\033[0m \033[1;32m%s\033[0m\n", getenv("USER"), hostname); // הדפסה עם עיצוב
 }
+
+
+//חלק א' סעיף ג'
+
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+char** splitArgument(char* str) {
+int i = 0; // משתנה מונה
+char** arguments = malloc(256 * sizeof(char*)); // הקצאת זיכרון למערך של 256 מצביעי מחרוזת
+char* token = strtok(str, " "); // קבלת האסימון הראשון מהמחרוזת המקורית
+
+
+while (token != NULL) { // לולאה שרצה עד שכל האסימונים נאספו
+    arguments[i++] = token; // שמירת האסימון הנוכחי במערך
+    token = strtok(NULL, " "); // קבלת האסימון הבא
+}
+arguments[i] = NULL; // סימון סוף המערך עם NULL
+
+return arguments; // החזרת המערך עם האסימונים
+}
+
+
