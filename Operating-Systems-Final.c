@@ -359,3 +359,34 @@ void echowrite(char **args) {
 
     printf("המחרוזת '%s' נכתבה בהצלחה לקובץ '%s'\n", args[1], filePath);
 }
+
+
+//חלק' ד' סעיף ד'
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// פונקציה לקריאה והדפסה של תוכן קובץ
+void read(char **args) {
+    // בדיקה אם נתיב הקובץ נמסר כארגומנט
+    if (args[1] == NULL) {
+        fprintf(stderr, "שגיאה: לא סופק נתיב לקובץ\n");
+        return;
+    }
+
+    // ניסיון לפתוח את הקובץ
+    FILE *file = fopen(args[1], "r");
+    if (file == NULL) {
+        fprintf(stderr, "שגיאה בפתיחת הקובץ: %s\n", args[1]);
+        return;
+    }
+
+    // קריאה והדפסה של תוכן הקובץ
+    char buffer[1024];
+    while (fgets(buffer, sizeof(buffer), file) != NULL) {
+        printf("%s", buffer);
+    }
+
+    // סגירת הקובץ
+    fclose(file);
+}
