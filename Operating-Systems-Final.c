@@ -21,3 +21,15 @@ function Wellcome() {
     echo "ccaacs"
 }
 
+//חלק א' סעיף ב'
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+void getLocation() {
+    char hostname[1024]; // בניית מערך בגודל 1024 ביטים כדי לאפשר מספיק מקום
+    hostname[1023] = '\0'; //  אתחול התו האחרון כתו שאומר שזה סוף המחזורת
+    gethostname(hostname, 1023); 
+
+    printf("\033[1;34mUser:\033[0m \033[1;32m%s\033[0m \033[1;34mHost:\033[0m \033[1;32m%s\033[0m\n", getenv("USER"), hostname); // הדפסה עם עיצוב
+}
