@@ -390,3 +390,53 @@ void read(char **args) {
     // סגירת הקובץ
     fclose(file);
 }
+
+
+//חלק ד' סעיף ה'
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// פונקציה לספירת שורות או מילים בקובץ
+void wordCount(char **args) {
+    // בדיקה שקיבלנו לפחות שלושה ארגומנטים: שם הפונקציה, האופציה והנתיב
+    if (args[1] == NULL || args[2] == NULL) {
+        fprintf(stderr, "שגיאה: חסרים ארגומנטים\n");
+        return;
+    }
+
+    char *option = args[1];
+    char *filePath = args[2];
+
+    FILE *file = fopen(filePath, "r");
+    if (file == NULL) {
+        fprintf(stderr, "שגיאה בפתיחת הקובץ: %s\n", filePath);
+        return;
+    }
+
+    int count = 0;
+    char buffer[1024];
+
+    if (strcmp(option, "-l") == 0) { // אם האופציה היא ספירת שורות
+        while (fgets(buffer, 1024, file) != NULL) {
+            count++;
+        }
+        printf("מספר השורות בקובץ: %d\n", count);
+    } else if (strcmp(option, "-w") == 0) { // אם האופציה היא ספירת מילים
+        while (fscanf(file, "%s", buffer) == 1) {
+            count++;
+        }
+        printf("מספר המילים בקובץ: %d\n", count);
+    }
+
+    fclose(file);
+}
+
+int main() {
+    // דוגמא לשימוש בפונקציה עם אופציית ספירת מילים
+    char *args[] = {"wordCount", "-w", "example.txt", NULL};
+    wordCount(args);
+
+    return 0;
+}
