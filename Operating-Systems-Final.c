@@ -243,3 +243,50 @@ void splitAndExecute(char* input) {
     // כעת, ניתן לקרוא לפונקציה mypipe עם command1 ו-command2
     // mypipe(command1, command2); // הנחה שהפונקציה mypipe מוגדרת במקום אחר
 }
+
+
+//חלק ד' סעיף א'
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+// פונקציה להסרת מרכאות מהתחלה וסוף המחרוזת אם קיימות
+void removeQuotes(char* str) {
+    size_t len = strlen(str);
+    if (str[0] == '"' && str[len - 1] == '"') {
+        memmove(str, str + 1, len - 2);
+        str[len - 2] = '\0';
+    }
+}
+
+// פונקציה להעברת קובץ מנתיב מקור לנתיב יעד
+void move(char **args) {
+    if (args[1] == NULL || args[2] == NULL) {
+        fprintf(stderr, "שגיאה: חסרים ארגומנטים לפקודת move\n");
+        return;
+    }
+
+    char sourcePath[1024];
+    char destPath[1024];
+
+    strcpy(sourcePath, args[1]);
+    removeQuotes(sourcePath);
+
+    strcpy(destPath, args[2]);
+    removeQuotes(destPath);
+
+    // בדיקה אם הקובץ המקורי קיים
+    if (access(sourcePath, F_OK) == -1) {
+        fprintf(stderr, "שגיאה: הקובץ המקורי '%s' לא נמצא\n", sourcePath);
+        return;
+    }
+
+    // ניסיון להעביר את הקובץ
+    if (rename(sourcePath, destPath) != 0) {
+        perror("שגיאה בהעברת הקובץ");
+        return;
+    }
+
+    printf("הקובץ הועבר בהצלחה מ- '%s' אל- '%s'\n", sourcePath, destPath);
+}
